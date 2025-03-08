@@ -17,4 +17,4 @@ g++ -mwindows -m64 -static -Wall -Wextra Image.cpp ^
  ..\Classes\WindowClass.cpp ^
  ..\Classes\WindowClassClass.cpp ^
  ^
- Resource.o -o Image.exe
+ Resource.o -o Image.exe -lole32 -loleaut32 -luuid

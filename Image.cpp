@@ -67,25 +67,9 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 		case WM_SIZE:
 		{
 			// A size message
-			int nClientWidth;
-			int nClientHeight;
-			RECT rcStatus;
-			int nStatusWindowHeight;
-			int nListBoxWindowHeight;
-
-			// Store client width and height
-			nClientWidth	= ( int )LOWORD( lParam );
-			nClientHeight	= ( int )HIWORD( lParam );
 
 			// Size status bar window
 			g_statusBarWindow.Size();
-
-			// Get status window size
-			g_statusBarWindow.GetWindowRect( &rcStatus );
-
-			// Calculate window sizes
-			nStatusWindowHeight		= ( rcStatus.bottom - rcStatus.top );
-			nListBoxWindowHeight	= ( nClientHeight - nStatusWindowHeight );
 
 			// Break out of switch
 			break;
@@ -96,7 +80,6 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 			// An activate message
 
 			// Focus on list box window
-			
 
 			// Break out of switch
 			break;
@@ -334,15 +317,24 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow )
 
 			} // End of successfully got argument list
 
-			// Create bitmap
-			if( !( g_bitmap.CreateCompatible( mainWindow, 200, 200 ) ) )
+			// Load image into bitmap
+			if( !( g_bitmap.Load( IMAGE_FILE_NAME ) ) )
 			{
-				// Unable to create bitmap
+				// Unable to load image into bitmap
+
+				// Allocate string memory
+				LPTSTR lpszErrorMessage = new char[ STRING_LENGTH + sizeof( char ) ];
+
+				// Format error message
+				wsprintf( lpszErrorMessage, BITMAP_CLASS_UNABLE_TO_LOAD_BITMAP_ERROR_MESSAGE_FORMAT_STRING, IMAGE_FILE_NAME );
 
 				// Display error message
-				MessageBox( mainWindow, BITMAP_CLASS_UNABLE_TO_CREATE_BITMAP_ERROR_MESSAGE, ERROR_MESSAGE_CAPTION, ( MB_OK | MB_ICONERROR ) );
+				MessageBox( mainWindow, lpszErrorMessage, ERROR_MESSAGE_CAPTION, ( MB_OK | MB_ICONERROR ) );
 
-			} // End of unable to create bitmap
+				// Free string memory
+				delete [] lpszErrorMessage;
+
+			} // End of unable to load image into bitmap
 
 			// Show main window
 			mainWindow.Show( nCmdShow );

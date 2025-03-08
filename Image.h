@@ -27,6 +27,8 @@
 
 #define MAIN_WINDOW_TEXT														"Image"
 
+#define IMAGE_FILE_NAME															"Tram.jpg"
+
 #define ABOUT_MESSAGE_TEXT														"Image\r\n"							\
 																				"\r\n"								\
 																				"Written by Jim Smith\r\n"			\
