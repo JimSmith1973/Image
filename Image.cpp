@@ -105,8 +105,8 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 		{
 			// A paint message
 
-			// Paint bitmap onto main window
-			g_bitmap.Paint( hWndMain, 0, 0 );
+			// Stretch bitmap onto main window
+			g_bitmap.Stretch( hWndMain, 0, 0 );
 
 			// Break out of switch
 			break;

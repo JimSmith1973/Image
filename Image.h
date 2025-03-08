@@ -27,7 +27,7 @@
 
 #define MAIN_WINDOW_TEXT														"Image"
 
-#define IMAGE_FILE_NAME															"Tram.jpg"
+#define IMAGE_FILE_NAME															"TramBig.jpg"
 
 #define ABOUT_MESSAGE_TEXT														"Image\r\n"							\
 																				"\r\n"								\
