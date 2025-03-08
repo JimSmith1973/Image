@@ -4,7 +4,6 @@
 
 // Global variables
 Bitmap g_bitmap;
-StatusBarWindow g_statusBarWindow;
 
 int ShowAboutMessage( HWND hWndParent )
 {
@@ -41,24 +40,6 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 		case WM_CREATE:
 		{
 			// A create message
-			HINSTANCE hInstance;
-
-			// Get instance
-			hInstance = ( ( LPCREATESTRUCT )lParam )->hInstance;
-
-			// Create status bar window
-			if( g_statusBarWindow.Create( hWndMain, hInstance ) )
-			{
-				// Successfully created status bar window
-				Font font;
-
-				// Get font
-				font = DEFAULT_GUI_FONT;
-
-				// Set status bar window font
-				g_statusBarWindow.SetFont( font );
-
-			} // End of successfully created status bar window
 
 			// Break out of switch
 			break;
@@ -68,8 +49,8 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 		{
 			// A size message
 
-			// Size status bar window
-			g_statusBarWindow.Size();
+			// Invalidate entire window
+			InvalidateRect( hWndMain, NULL, TRUE );
 
 			// Break out of switch
 			break;
@@ -106,7 +87,7 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 			// A paint message
 
 			// Stretch bitmap onto main window
-			g_bitmap.Stretch( hWndMain, 0, 0 );
+			g_bitmap.Center( hWndMain );
 
 			// Break out of switch
 			break;

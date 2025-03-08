@@ -14,10 +14,8 @@
 #include "..\Classes\BitmapClass.h"
 #include "..\Classes\DroppedFilesClass.h"
 #include "..\Classes\FontClass.h"
-#include "..\Classes\ListBoxWindowClass.h"
 #include "..\Classes\MessageClass.h"
 #include "..\Classes\MenuClass.h"
-#include "..\Classes\StatusBarWindowClass.h"
 #include "..\Classes\WindowClass.h"
 #include "..\Classes\WindowClassClass.h"
 
@@ -27,7 +25,7 @@
 
 #define MAIN_WINDOW_TEXT														"Image"
 
-#define IMAGE_FILE_NAME															"TramBig.jpg"
+#define IMAGE_FILE_NAME															"Tram.jpg"
 
 #define ABOUT_MESSAGE_TEXT														"Image\r\n"							\
 																				"\r\n"								\
