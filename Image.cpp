@@ -1,31 +1,10 @@
-// Template.cpp
+// Image.cpp
 
-#include "Template.h"
+#include "Image.h"
 
 // Global variables
-ListBoxWindow g_listBoxWindow;
+Bitmap g_bitmap;
 StatusBarWindow g_statusBarWindow;
-
-void ListBoxWindowSelectionChangedFunction( LPTSTR lpszItemText )
-{
-	// Show item text on status bat window
-	g_statusBarWindow.SetText( lpszItemText );
-
-} // End of function ListBoxWindowSelectionChangedFunction
-
-void ListBoxWindowDoubleClickFunction( LPTSTR lpszItemText )
-{
-	// Display item text
-	MessageBox( NULL, lpszItemText, INFORMATION_MESSAGE_CAPTION, ( MB_OK | MB_ICONINFORMATION ) );
-
-} // End of function ListBoxWindowDoubleClickFunction
-
-void OpenFileFunction( LPCTSTR lpszFilePath )
-{
-	// Add file to list box window
-	g_listBoxWindow.AddText( lpszFilePath );
-
-} // End of function OpenFileFunction
 
 int ShowAboutMessage( HWND hWndParent )
 {
@@ -67,29 +46,19 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 			// Get instance
 			hInstance = ( ( LPCREATESTRUCT )lParam )->hInstance;
 
-			// Create list box window
-			if( g_listBoxWindow.Create( hWndMain, hInstance ) )
+			// Create status bar window
+			if( g_statusBarWindow.Create( hWndMain, hInstance ) )
 			{
-				// Successfully created list box window
+				// Successfully created status bar window
 				Font font;
 
 				// Get font
 				font = DEFAULT_GUI_FONT;
 
-				// Set list box window font
-				g_listBoxWindow.SetFont( font );
+				// Set status bar window font
+				g_statusBarWindow.SetFont( font );
 
-				// Create status bar window
-				if( g_statusBarWindow.Create( hWndMain, hInstance ) )
-				{
-					// Successfully created status bar window
-
-					// Set status bar window font
-					g_statusBarWindow.SetFont( font );
-
-				} // End of successfully created status bar window
-
-			} // End of successfully created list box window
+			} // End of successfully created status bar window
 
 			// Break out of switch
 			break;
@@ -118,9 +87,6 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 			nStatusWindowHeight		= ( rcStatus.bottom - rcStatus.top );
 			nListBoxWindowHeight	= ( nClientHeight - nStatusWindowHeight );
 
-			// Move list box window
-			g_listBoxWindow.Move( 0, 0, nClientWidth, nListBoxWindowHeight, TRUE );
-
 			// Break out of switch
 			break;
 
@@ -130,7 +96,7 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 			// An activate message
 
 			// Focus on list box window
-			g_listBoxWindow.SetFocus();
+			
 
 			// Break out of switch
 			break;
@@ -152,6 +118,17 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 			break;
 
 		} // End of a get min max info message
+		case WM_PAINT:
+		{
+			// A paint message
+
+			// Paint bitmap onto main window
+			g_bitmap.Paint( hWndMain, 0, 0 );
+
+			// Break out of switch
+			break;
+
+		} // End of a paint message
 		case WM_DROPFILES:
 		{
 			// A drop files message
@@ -163,7 +140,6 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 				// Successfully got dropped files
 
 				// Process dropped files
-				droppedFiles.Process( &OpenFileFunction );
 
 			} // End of successfully got dropped files
 
@@ -204,30 +180,8 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 				{
 					// Default command
 
-					// See if command message is from list box window
-					if( ( HWND )lParam == g_listBoxWindow )
-					{
-						// Command message is from list box window
-
-						// Handle command message from list box window
-						if( !( g_listBoxWindow.HandleCommandMessage( wParam, lParam, ListBoxWindowSelectionChangedFunction, ListBoxWindowDoubleClickFunction ) ) )
-						{
-							// Command message was not handled from list box window
-
-							// Call default procedure
-							lr = DefWindowProc( hWndMain, uMessage, wParam, lParam );
-
-						} // End of command message was not handled from list box window
-
-					} // End of command message is from list box window
-					else
-					{
-						// Command message is not from list box window
-
-						// Call default procedure
-						lr = DefWindowProc( hWndMain, uMessage, wParam, lParam );
-
-					} // End of command message is not from list box window
+					// Call default procedure
+					lr = DefWindowProc( hWndMain, uMessage, wParam, lParam );
 
 					// Break out of switch
 					break;
@@ -378,10 +332,17 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow )
 			{
 				// Successfully got argument list
 
-				// Process arguments
-				argumentList.ProcessArguments( &OpenFileFunction );
-
 			} // End of successfully got argument list
+
+			// Create bitmap
+			if( !( g_bitmap.CreateCompatible( mainWindow, 200, 200 ) ) )
+			{
+				// Unable to create bitmap
+
+				// Display error message
+				MessageBox( mainWindow, BITMAP_CLASS_UNABLE_TO_CREATE_BITMAP_ERROR_MESSAGE, ERROR_MESSAGE_CAPTION, ( MB_OK | MB_ICONERROR ) );
+
+			} // End of unable to create bitmap
 
 			// Show main window
 			mainWindow.Show( nCmdShow );
