@@ -23,6 +23,12 @@
 
 #define MAIN_WINDOW_CLASS_MENU_NAME												MAKEINTRESOURCE( IDR_MAIN_MENU )
 
+#define MAIN_WINDOW_CLASS_BACKGROUND											( HBRUSH )( COLOR_DESKTOP + 1 )
+
+#define MAIN_WINDOW_EXTENDED_STYLE												WS_EX_TOPMOST
+#define MAIN_WINDOW_STYLE														( WS_POPUP | WS_VISIBLE )
+#define MAIN_WINDOW_MENU														NULL
+
 #define MAIN_WINDOW_TEXT														"Image"
 
 #define IMAGE_FILE_NAME															"Tram.jpg"

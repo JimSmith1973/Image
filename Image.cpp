@@ -220,6 +220,42 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 			break;
 
 		} // End of a context menu message
+		case WM_KEYDOWN:
+		{
+			// A key down message
+
+			// Select key
+			switch( wParam )
+			{
+				case VK_ESCAPE:
+				{
+					// The escape key has been pressed
+
+					// Destroy main window
+					DestroyWindow( hWndMain );
+
+					// Break out of switch
+					break;
+
+				} // End of the escape key has been pressed
+				default:
+				{
+					// Another key has been pressed
+
+					// Call default window procedure
+					lr = DefWindowProc( hWndMain, uMessage, wParam, lParam );
+
+					// Break out of switch
+					break;
+
+				} // End of another key has been pressed
+
+			}; // End of selection for key
+
+			// Break out of switch
+			break;
+
+		} // End of key down message
 		case WM_CLOSE:
 		{
 			// A close message
@@ -267,16 +303,22 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow )
 	WindowClass mainWindowClass;
 
 	// Initialise main window class
-	mainWindowClass.Initialise( MAIN_WINDOW_CLASS_NAME, hInstance, MainWindowProcedure, MAIN_WINDOW_CLASS_MENU_NAME );
+	mainWindowClass.Initialise( MAIN_WINDOW_CLASS_NAME, hInstance, MainWindowProcedure, MAIN_WINDOW_MENU, WINDOW_CLASS_CLASS_DEFAULT_ICON, WINDOW_CLASS_CLASS_DEFAULT_SMALL_ICON, MAIN_WINDOW_CLASS_BACKGROUND );
 
 	// Register main window class
 	if( mainWindowClass.Register() )
 	{
 		// Successfully registered main window class
 		Window mainWindow;
+		int nDesktopWindowWidth;
+		int nDesktopWindowHeight;
+
+		// Get desktop window size
+		nDesktopWindowWidth		= GetSystemMetrics( SM_CXSCREEN );
+		nDesktopWindowHeight	= GetSystemMetrics( SM_CYSCREEN );
 
 		// Create main window
-		if( mainWindow.Create( MAIN_WINDOW_CLASS_NAME, NULL, hInstance, MAIN_WINDOW_TEXT ) )
+		if( mainWindow.Create( MAIN_WINDOW_CLASS_NAME, NULL, hInstance, MAIN_WINDOW_TEXT, MAIN_WINDOW_MENU, MAIN_WINDOW_EXTENDED_STYLE, MAIN_WINDOW_STYLE, 0, 0, nDesktopWindowWidth, nDesktopWindowHeight ) )
 		{
 			// Successfully created main window
 			Menu systemMenu;
